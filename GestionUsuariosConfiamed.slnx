@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/Presentation/">
+    <Project Path="GestionClientes/GestionClientes.csproj" />
+    <Project Path="ItemsTrabajos/ItemsTrabajos.csproj" />
+  </Folder>
+</Solution>
