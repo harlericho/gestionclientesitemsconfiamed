@@ -29,6 +29,16 @@ GestionUsuariosConfiamed/
 └── ...otros archivos
 ```
 
+## Nota sobre la arquitectura y advertencias de análisis
+
+La arquitectura de este repositorio está basada en microservicios y separación de capas (controladores, modelos, servicios, repositorios). Si alguna herramienta de análisis (como SonarQube) muestra advertencias sobre la arquitectura, puede deberse a:
+
+- El tiempo de análisis insuficiente o problemas de configuración.
+- La estructura del repositorio, que separa cada microservicio en carpetas independientes.
+- Falta de información sobre dependencias externas o archivos de configuración.
+
+Esto no implica necesariamente un problema real en la arquitectura, sino que puede ser una limitación de la herramienta utilizada.
+
 ## Modelo de endpoints principales
 
 ### GestionClientes
