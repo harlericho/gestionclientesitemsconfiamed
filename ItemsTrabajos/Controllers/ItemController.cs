@@ -33,12 +33,21 @@ namespace ItemsTrabajos.Controllers
             }
             return Ok(item);
         }
-        [HttpPost]
-        public IActionResult AgregarItem([FromBody] ItemTrabajo item)
-        {
-            _itemService.AgregarItem(item);
-            return Ok("Item agregado correctamente.");
-        }
+        [HttpGet("pendientes/{usuarioId}")]
+        public IActionResult ObtenerPendientes(int usuarioId) =>
+         Ok(_itemService.ObtenerPendientesOrdenados(usuarioId));
+
+        [HttpGet("saturado/{usuarioId}")]
+        public IActionResult VerificarSaturacion(int usuarioId) =>
+           Ok(new
+           {
+               usuarioId,
+               saturado = _itemService.UsuarioEstaSaturado(usuarioId),
+               mensaje = _itemService.UsuarioEstaSaturado(usuarioId)
+                   ? "Usuario saturado, no apto para nuevas asignaciones relevantes."
+                   : "Usuario disponible para asignación."
+           });
+
         [HttpPut("{itemId}/asignar-usuario/{usuarioId}")]
         public IActionResult AsignarUsuario(int itemId, int usuarioId)
         {
@@ -55,8 +64,18 @@ namespace ItemsTrabajos.Controllers
         {
             _itemService.AgregarItem(item);
             var resultadoAsignacion = await _asignacionService.AsignarItemAutomaticamente(item);
-            return Ok(resultadoAsignacion);
+            return Ok(new
+            {
+                item,
+                mensaje = resultadoAsignacion
+            });
 
+        }
+        [HttpPut("{itemId}/completar")]
+        public IActionResult MarcarCompletado(int itemId)
+        {
+            _itemService.MarcarCompletado(itemId);
+            return Ok("Ítem marcado como completado.");
         }
     }
 }

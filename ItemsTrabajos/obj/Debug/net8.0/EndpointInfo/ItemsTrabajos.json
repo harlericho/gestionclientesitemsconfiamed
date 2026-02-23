@@ -15,35 +15,6 @@
             "description": "OK"
           }
         }
-      },
-      "post": {
-        "tags": [
-          "Item"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ItemTrabajo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ItemTrabajo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ItemTrabajo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
       }
     },
     "/api/item/{id}": {
@@ -54,6 +25,52 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/item/pendientes/{usuarioId}": {
+      "get": {
+        "tags": [
+          "Item"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/item/saturado/{usuarioId}": {
+      "get": {
+        "tags": [
+          "Item"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioId",
             "in": "path",
             "required": true,
             "schema": {
@@ -132,6 +149,29 @@
         }
       }
     },
+    "/api/item/{itemId}/completar": {
+      "put": {
+        "tags": [
+          "Item"
+        ],
+        "parameters": [
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/WeatherForecast": {
       "get": {
         "tags": [
@@ -192,10 +232,17 @@
             "type": "string",
             "format": "date-time"
           },
-          "usuarioId": {
+          "usuarioAsignadoId": {
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "completado": {
+            "type": "boolean"
+          },
+          "fechaProximaAVencer": {
+            "type": "boolean",
+            "readOnly": true
           }
         },
         "additionalProperties": false

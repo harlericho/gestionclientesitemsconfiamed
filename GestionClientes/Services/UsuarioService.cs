@@ -28,10 +28,26 @@ namespace GestionClientes.Services
             return _usuarioRepository.ObtenerMenosItems();
         }
         // metodo para asignar un nuevo item a un usuario
-        public void AsignarItem(int usuarioId, int itemId)
+        public void AsignarItem(int usuarioId, ItemAsignado item)
         {
-            _usuarioRepository.AsignarItem(usuarioId, itemId);
+            _usuarioRepository.AsignarItem(usuarioId, item);
         }
 
+        // metodo para obtener el usuario menos saturado
+        public Usuario ObtenerUsuarioMenosSaturado()
+        {
+            return _usuarioRepository.ObtenerUsuarioMenosSaturado();
+        }
+
+        // metodo para marcar un item como completado
+        public void MarcarCompletado(int usuarioId, int itemId) =>
+       _usuarioRepository.MarcarCompletado(usuarioId, itemId);
+
+        // metodo para verificar si un usuario está saturado
+        public bool EstaSaturado(int usuarioId)
+        {
+            var usuario = _usuarioRepository.ObtenerUsuarioId(usuarioId);
+            return usuario?.EstaSaturado ?? false;
+        }
     }
 }

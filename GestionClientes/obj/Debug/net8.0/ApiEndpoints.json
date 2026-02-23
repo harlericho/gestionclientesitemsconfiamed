@@ -11,9 +11,46 @@
   },
   {
     "ContainingType": "GestionClientes.Controllers.UsuarioController",
+    "Method": "EstaSaturado",
+    "RelativePath": "api/usuario/{id}/saturado",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GestionClientes.Controllers.UsuarioController",
     "Method": "AsignarUsuarioItem",
-    "RelativePath": "api/usuario/{usuarioId}/asignar-item/{itemId}",
+    "RelativePath": "api/usuario/{usuarioId}/asignar-item",
     "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "item",
+        "Type": "GestionClientes.Models.ItemAsignado",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GestionClientes.Controllers.UsuarioController",
+    "Method": "MarcarCompletado",
+    "RelativePath": "api/usuario/{usuarioId}/completar/{itemId}",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -28,6 +65,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "GestionClientes.Controllers.UsuarioController",
+    "Method": "ObtenerMejorDisponible",
+    "RelativePath": "api/usuario/mejor-disponible",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

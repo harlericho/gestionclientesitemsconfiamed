@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GestionClientes.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GestionClientes.Controllers
 {
@@ -19,6 +20,20 @@ namespace GestionClientes.Controllers
             var usuarios = _usuarioService.ObtenerUsuarios();
             return Ok(usuarios);
         }
+        [HttpGet("mejor-disponible")]
+        public IActionResult ObtenerMejorDisponible()
+        {
+            var usuario = _usuarioService.ObtenerUsuarioMenosSaturado();
+            if (usuario == null)
+            {
+                return BadRequest("Todos los usuarios están saturados.");
+            }
+            return Ok(usuario);
+        }
+        [HttpGet("{id}/saturado")]
+        public IActionResult EstaSaturado(int id) =>
+            Ok(new { saturado = _usuarioService.EstaSaturado(id) });
+
         [HttpGet("menos-items")]
         public IActionResult ObtenerUsuarioMenosItems()
         {
@@ -30,16 +45,22 @@ namespace GestionClientes.Controllers
             return Ok(usuario);
 
         }
-        [HttpPost("{usuarioId}/asignar-item/{itemId}")]
-        public IActionResult AsignarUsuarioItem(int usuarioId, int itemId)
+        [HttpPost("{usuarioId}/asignar-item")]
+        public IActionResult AsignarUsuarioItem(int usuarioId, ItemAsignado item)
         {
             var usuario = _usuarioService.ObtenerUsuarioId(usuarioId);
             if (usuario == null)
             {
                 return NotFound($"Usuario con id {usuarioId} no encontrado.");
             }
-            _usuarioService.AsignarItem(usuarioId, itemId);
-            return Ok($"Item {itemId} asignado al usuario {usuario.Nombre}.");
+            _usuarioService.AsignarItem(usuarioId, item);
+            return Ok($"Item {item} asignado al usuario {usuario.Nombre}.");
+        }
+        [HttpPut("{usuarioId}/completar/{itemId}")]
+        public IActionResult MarcarCompletado(int usuarioId, int itemId)
+        {
+            _usuarioService.MarcarCompletado(usuarioId, itemId);
+            return Ok("Ítem marcado como completado.");
         }
     }
 }

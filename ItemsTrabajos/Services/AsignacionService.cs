@@ -22,13 +22,14 @@ namespace ItemsTrabajos.Services
         public async Task<string> AsignarItemAutomaticamente(ItemTrabajo itemTrabajo)
         {
             // verificar si el item cumple con los criterios para asignación automática
-            bool asignarCarga = AltamenteRelevante(itemTrabajo) || FechaLimiteCercana(itemTrabajo);
-            if (!asignarCarga)
+            bool fechaProxima = FechaLimiteCercana(itemTrabajo); // menos de 3 dias para la fecha de entrega
+            bool asignarCarga = itemTrabajo.Relevante;
+            if (!asignarCarga && !fechaProxima)
             {
-                return "No se asignara automaticamente el item, no cumple con los criterios.";
+                return "El item no cumple con los criterios para asignación automática.";
             }
             // obtener el usuario con menos items asignados del microservicio de gestion usuarios
-            var response = await _httpClient.GetAsync($"{ UrlUsuarios}/menos-items");
+            var response = await _httpClient.GetAsync($"{ UrlUsuarios}/mejor-disponible");
             if (!response.IsSuccessStatusCode)
             {
                 return "Error al obtener usuarios del microservicio de gestion usuarios.";
@@ -39,22 +40,31 @@ namespace ItemsTrabajos.Services
             var usuario = JsonSerializer.Deserialize<UsuarioDto>(json,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
 
+            // verificar si se obtuvo un usuario válido
+            if (usuario == null)
+            {
+                return "No se encontró un usuario disponible para asignar el item.";
+            }
+
             // asignar el item al usuario obtenido y actualizar la base de datos
             _itemRepository.ActualizarAsignacion(itemTrabajo.Id, usuario.Id);
-            await _httpClient.PostAsync($"{ UrlUsuarios}/asignar-item/{usuario.Id}", null);
+            // crear un objeto con los datos del item para enviar al microservicio de usuarios
+            var itemAsignado = new
+            {
+                itemId = itemTrabajo.Id,
+                esAltamenteRelevante = itemTrabajo.Relevante,
+                fechaEntrega = itemTrabajo.FechaEntrega,
+                completado = false
+            };
+            await _httpClient.PostAsync($"{ UrlUsuarios}/{usuario.Id}/asignar-item", null);
             return $"Item asignado automáticamente al usuario {usuario.Nombre}.";
 
-        }
-        // metodo para asignar automáticamente un item a un usuario
-        private bool AltamenteRelevante(ItemTrabajo item)
-        {
-            return item.Relevante;
         }
         // metodo verificar si la fecha de entrega del item es cercana (menos de 2 días)
         private bool FechaLimiteCercana(ItemTrabajo item)
         {
             var diasRestantes = (item.FechaEntrega - DateTime.Now).TotalDays;
-            return diasRestantes <= 2;
+            return diasRestantes <= 3;
         }
         // metodo dtos para enviar al microservicio de usuarios
         private class UsuarioDto

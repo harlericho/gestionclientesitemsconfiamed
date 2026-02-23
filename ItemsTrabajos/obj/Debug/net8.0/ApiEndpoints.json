@@ -11,22 +11,6 @@
   },
   {
     "ContainingType": "ItemsTrabajos.Controllers.ItemController",
-    "Method": "AgregarItem",
-    "RelativePath": "api/item",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "item",
-        "Type": "ItemsTrabajos.Models.ItemTrabajo",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ItemsTrabajos.Controllers.ItemController",
     "Method": "ObtenerItemId",
     "RelativePath": "api/item/{id}",
     "HttpMethod": "GET",
@@ -64,6 +48,22 @@
   },
   {
     "ContainingType": "ItemsTrabajos.Controllers.ItemController",
+    "Method": "MarcarCompletado",
+    "RelativePath": "api/item/{itemId}/completar",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "itemId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ItemsTrabajos.Controllers.ItemController",
     "Method": "CrearAsignarItem",
     "RelativePath": "api/item/crear-asignar",
     "HttpMethod": "POST",
@@ -73,6 +73,38 @@
       {
         "Name": "item",
         "Type": "ItemsTrabajos.Models.ItemTrabajo",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ItemsTrabajos.Controllers.ItemController",
+    "Method": "ObtenerPendientes",
+    "RelativePath": "api/item/pendientes/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ItemsTrabajos.Controllers.ItemController",
+    "Method": "VerificarSaturacion",
+    "RelativePath": "api/item/saturado/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
